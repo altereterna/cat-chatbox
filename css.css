@@ -1,0 +1,64 @@
+/* Import a pixel art font */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* Container for the chat box */
+#chat-box {
+    width: auto;
+    height: auto;
+    overflow: hidden;
+    background-color: rgba(78, 131, 185, 0.9); /* Turquoise background */
+    color: white; /* Text color */
+    font-family: 'Press Start 2P', cursive; /* Pixel art font */
+    font-size: 16px; /* Adjust font size as needed */
+    padding: 10px;
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+    left: 70px; /* Adjusted left position for cat image */
+    border: 4px solid #ffffff; /* Turquoise border */
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the content horizontally */
+}
+
+/* Individual chat messages */
+.chat-message {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: relative;
+    animation: slideIn 1s ease-out;
+    text-shadow: 2px 2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000, -2px -2px 0px #000; /* Pixel art shadow */
+    max-width: 100%;
+}
+
+/* Chat badges */
+.chat-badge {
+    margin-right: 5px;
+    height: 20px;
+    width: 20px;
+}
+
+.cat-image {
+    position: fixed;
+    bottom: 10px; /* Adjust bottom position as needed */
+    left: 10px; /* Adjust left position as needed */
+    width: 50px; /* Adjust width as needed */
+    height: 50px; /* Adjust height as needed */
+    display: none; /* Initially hide cat image */
+}
+
+/* Keyframes for sliding animation */
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
