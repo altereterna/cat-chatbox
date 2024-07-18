@@ -6,7 +6,7 @@
     width: auto;
     height: auto;
     overflow: hidden;
-    background-color: rgba(78, 131, 185, 0.9); /* Turquoise background */
+    background-color: rgba(78, 131, 185, 0.9); /* this the box color */
     color: white; /* Text color */
     font-family: 'Press Start 2P', cursive; /* Pixel art font */
     font-size: 16px; /* Adjust font size as needed */
@@ -15,7 +15,7 @@
     position: fixed;
     bottom: 0;
     left: 70px; /* Adjusted left position for cat image */
-    border: 4px solid #ffffff; /* Turquoise border */
+    border: 4px solid #ffffff; /* box's border color */
     border-radius: 8px;
     display: flex;
     align-items: center;
