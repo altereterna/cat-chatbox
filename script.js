@@ -6,7 +6,6 @@ catImage.className = 'cat-image'; // Class for styling
 
 let idleTimer;
 
-// Example emote and badge URL maps
 const emotes = {
     "Kappa": "https://static-cdn.jtvnw.net/emoticons/v1/25/1.0",
     "PogChamp": "https://static-cdn.jtvnw.net/emoticons/v1/88/1.0"
@@ -16,6 +15,49 @@ const badges = {
     "broadcaster": "https://static-cdn.jtvnw.net/badges/v1/48",
     "moderator": "https://static-cdn.jtvnw.net/badges/v1/mod"
 };
+
+// Fetch emotes from Twitch, BTTV, and 7TV
+async function fetchEmotes() {
+    // Twitch Global Emotes
+    try {
+        const twitchResponse = await fetch('https://api.twitch.tv/helix/chat/emotes/global', {
+            headers: {
+                'Client-ID': 'YOUR_TWITCH_CLIENT_ID',
+                'Authorization': 'Bearer YOUR_TWITCH_OAUTH_TOKEN'
+            }
+        });
+        const twitchData = await twitchResponse.json();
+        twitchData.data.forEach(emote => {
+            emotes[emote.name] = emote.images.url_1x;
+        });
+    } catch (error) {
+        console.error('Error fetching Twitch emotes:', error);
+    }
+
+    // BTTV Emotes
+    try {
+        const bttvResponse = await fetch('https://api.betterttv.net/3/cached/emotes/global');
+        const bttvData = await bttvResponse.json();
+        bttvData.forEach(emote => {
+            emotes[emote.code] = `https://cdn.betterttv.net/emote/${emote.id}/1x`;
+        });
+    } catch (error) {
+        console.error('Error fetching BTTV emotes:', error);
+    }
+
+    // 7TV Emotes
+    try {
+        const sevenTVResponse = await fetch('https://api.7tv.app/v2/emotes/global');
+        const sevenTVData = await sevenTVResponse.json();
+        sevenTVData.forEach(emote => {
+            emotes[emote.name] = emote.urls[0][1];
+        });
+    } catch (error) {
+        console.error('Error fetching 7TV emotes:', error);
+    }
+}
+
+fetchEmotes();
 
 function addChatMessage(username, message, userBadges) {
     // Truncate the message if it's longer than 50 characters
@@ -66,30 +108,33 @@ function addChatMessage(username, message, userBadges) {
     clearTimeout(idleTimer);
     idleTimer = setTimeout(() => {
         resetChatBox();
-    }, 15000); // Reset after 15 seconds of idling
+    }, 10000); // Reset after 10 seconds of idling
 
     // Trigger reflow to restart the animation
     void chatMessage.offsetWidth;
 }
 
 function resetChatBox() {
-    // Animate chat box reset
-    chatBox.style.transition = 'transform 0.5s ease'; // Smooth transition
-    chatBox.style.transform = 'translateX(-100%)'; // Move chat box to the left
+    // Apply shrinking animation to chat box and cat image
+    chatBox.style.transition = 'transform 0.5s ease, opacity 0.5s ease'; // Smooth transition for both transform and opacity
+    chatBox.style.transform = 'scale(0)'; // Shrink chat box to the center
+    chatBox.style.opacity = '0'; // Fade out chat box
 
-    // Animate cat image reset
-    catImage.style.transition = 'transform 0.5s ease'; // Smooth transition
-    catImage.style.transform = 'translateX(-100%)'; // Move cat image to the left
+    catImage.style.transition = 'transform 0.5s ease, opacity 0.5s ease'; // Smooth transition for both transform and opacity
+    catImage.style.transform = 'scale(0)'; // Shrink cat image to the center
+    catImage.style.opacity = '0'; // Fade out cat image
 
     // Clear any existing messages after animation completes
     setTimeout(() => {
         chatBox.innerHTML = ''; // Clear chat box content
         chatBox.style.transition = ''; // Reset transition property
-        chatBox.style.transform = 'translateX(0)'; // Move chat box back to original position
+        chatBox.style.transform = 'scale(1)'; // Reset scale to original size
+        chatBox.style.opacity = '1'; // Reset opacity to fully visible
         chatBox.style.display = 'none'; // Hide chat box again
         
         catImage.style.transition = ''; // Reset transition property
-        catImage.style.transform = 'translateX(0)'; // Move cat image back to original position
+        catImage.style.transform = 'scale(1)'; // Reset scale to original size
+        catImage.style.opacity = '1'; // Reset opacity to fully visible
         catImage.style.display = 'none'; // Hide cat image again
     }, 500); // Wait for 0.5 seconds for animation to complete
 }
